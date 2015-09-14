@@ -5,5 +5,6 @@ class Skill {
 	var $name;
 	var $description;
 	var $videoUrl;
+	var $corrections;
 }
 ?>

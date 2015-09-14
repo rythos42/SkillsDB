@@ -3,10 +3,12 @@ class SkillMapper {
 	function getAllSkillsForDiscipline($connection, $disciplineId) {
 		$skillArray = array();
 
-		$query = $connection->prepare("SELECT SkillId, DisciplineId, Name, Description, VideoUrl FROM Skill WHERE DisciplineId=?");
-		$query->bind_param('i', $disciplineId);
-		$query->execute();
-		$result = $query->get_result();
+		$skillQuery = $connection->prepare("SELECT SkillId, DisciplineId, Name, Description, VideoUrl FROM Skill WHERE DisciplineId=?");
+		$skillQuery->bind_param('i', $disciplineId);
+		$skillQuery->execute();
+		$result = $skillQuery->get_result();
+		
+		$correctionmapper = new CorrectionMapper();
 		
 		while($row = $result->fetch_assoc()) {
 			$skill = new Skill();
@@ -15,10 +17,12 @@ class SkillMapper {
 			$skill->name = $row["Name"];
 			$skill->description = $row["Description"];
 			$skill->videoUrl = $row["VideoUrl"];
+			
+			$skill->corrections = $correctionmapper->getAllCorrectionsForSkill($connection, $skill->id);
 			array_push($skillArray, $skill);
 		}
 		
-		$query->close();
+		$skillQuery->close();
 		
 		return $skillArray;
 	}

@@ -21,20 +21,20 @@
 		<script type="text/javascript" src="../shared/js/lib/knockout-3.3.0.min.js"></script>
 		<script type="text/javascript" src="../shared/js/lib/underscore-1.8.3.min.js"></script>
 		
-		<script type="text/javascript" src="/admin/js/app/viewmodels/AdminDisciplineViewModel.js"></script>
+		<script type="text/javascript" src="/client/js/app/viewmodels/ClientDisciplineViewModel.js"></script>
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
 					var config = {
 						disciplineData: <?php echo $jsonDiscipline; ?>
 					};
-					var viewModel = new AdminDisciplineViewModel(config);
+					var viewModel = new ClientDisciplineViewModel(config);
 					
 					ko.applyBindings(viewModel);
 			});
 		</script>
 		
-		<link rel="stylesheet" type="text/css" href="/admin/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/client/css/style.css" />
 	</head>
 	<body>
 		<div class="container">
@@ -42,12 +42,39 @@
 				<select id="DisciplineDropDownList" 
 					data-bind="options: availableDisciplines, optionsText: 'name', value: selectedDiscipline, optionsCaption: 'Select a discipline...'"></select>
 					
-				<!-- ko foreach: availableSkills -->
-				<div data-bind="text: name"></div>
-				<!-- /ko -->
+				<div class="skill-list" data-bind="foreach: availableSkills">
+					<a href="#" data-bind="text: name, click: $root.selectSkill"></a>
+				</div>
 			</div>
 			<div class="main">
-				<span data-bind="text: selectedDisciplineDescription"></span>
+				<div class="discipline-content">
+					<span data-bind="text: selectedDisciplineDescription"></span>
+				</div>
+				
+				<div class="skill-content" data-bind="visible: hasSkillSelected">				
+					<span data-bind="text: selectedSkillDescription"></span>
+					<span data-bind="text: selectedSkillName"></span>
+					<span data-bind="text: selectedSkillVideoUrl"></span>
+					
+					<div class="corrections-content">
+						<table>
+							<thead>
+								<tr>
+									<th>Problem</th>
+									<th>Reason</th>
+									<th>Correction</th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: availableCorrections">
+								<tr>
+									<td data-bind="text: problem"></td>
+									<td data-bind="text: reason"></td>
+									<td data-bind="text: correction"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
