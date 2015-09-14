@@ -11,4 +11,17 @@ var AdminDisciplineViewModel = function(config) {
 		
 		return selectedDiscipline.description;
 	});
+	
+	self.selectedDiscipline.subscribe(function(newDiscipline) {
+		if(!newDiscipline)
+			return;
+		
+		$.ajax({
+			url: '/shared/facade/SkillDataForDiscipline.php?disciplineId=' + newDiscipline.id
+		}).done(function(result) {
+			self.availableSkills($.parseJSON(result));
+		});
+	});
+	
+	self.availableSkills = ko.observable(null);
 };

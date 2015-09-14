@@ -13,6 +13,7 @@
 		
 		$jsonDiscipline = json_encode($disciplineArray);
 		
+		
 		$database->close();
 		?>
 		
@@ -32,15 +33,22 @@
 					ko.applyBindings(viewModel);
 			});
 		</script>
+		
+		<link rel="stylesheet" type="text/css" href="/admin/css/style.css" />
 	</head>
 	<body>
-		<div class="left-menu">
-			<select id="DisciplineDropDownList" 
-				data-bind="options: availableDisciplines, optionsText: 'name', value: selectedDiscipline, 
-				optionsCaption: 'Select a discipline...'"></select>
-		</div>
-		<div class="main">
-			<span data-bind="text: selectedDisciplineDescription"></span>
+		<div class="container">
+			<div class="left-menu">
+				<select id="DisciplineDropDownList" 
+					data-bind="options: availableDisciplines, optionsText: 'name', value: selectedDiscipline, optionsCaption: 'Select a discipline...'"></select>
+					
+				<!-- ko foreach: availableSkills -->
+				<div data-bind="text: name"></div>
+				<!-- /ko -->
+			</div>
+			<div class="main">
+				<span data-bind="text: selectedDisciplineDescription"></span>
+			</div>
 		</div>
 	</body>
 </html>
